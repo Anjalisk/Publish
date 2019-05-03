@@ -8,9 +8,9 @@ categories:
 tags:
   - R Markdown
 description: ''
-featured: ''
-featuredalt: ''
-featuredpath: ''
+featured: pic05.jpeg
+featuredalt: Pic 5
+featuredpath: date
 linktitle: ''
 ---
 
@@ -223,18 +223,18 @@ tunes &lt;- FindTopicsNumber(
 lda_td &lt;- tidy(lda)
 lda_td</code></pre>
 <pre><code>## # A tibble: 28,048 x 3
-##    topic term           beta
-##    &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;
-##  1     1 aboven   0.00000583
-##  2     2 aboven   0.0000419 
-##  3     1 account  0.000274  
-##  4     2 account  0.0000258 
-##  5     1 actually 0.000993  
-##  6     2 actually 0.00164   
-##  7     1 advice   0.000747  
-##  8     2 advice   0.000880  
-##  9     1 already  0.000848  
-## 10     2 already  0.000481  
+##    topic term          beta
+##    &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1     1 aboven   0.0000331
+##  2     2 aboven   0.0000133
+##  3     1 account  0.0000782
+##  4     2 account  0.000230 
+##  5     1 actually 0.00258  
+##  6     2 actually 0.0000411
+##  7     1 advice   0.000129 
+##  8     2 advice   0.00149  
+##  9     1 already  0.000453 
+## 10     2 already  0.000888 
 ## # … with 28,038 more rows</code></pre>
 <pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
 top_terms &lt;- lda_td %&gt;%
@@ -259,16 +259,16 @@ lda_td</code></pre>
 <pre><code>## # A tibble: 42,072 x 3
 ##    topic term          beta
 ##    &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
-##  1     1 aboven   4.58e-  5
-##  2     2 aboven   2.33e-  5
-##  3     3 aboven   9.86e-113
-##  4     1 account  2.43e-  5
-##  5     2 account  9.51e-  5
-##  6     3 account  3.46e-  4
-##  7     1 actually 1.81e-  3
-##  8     2 actually 1.06e-  3
-##  9     3 actually 1.03e-  3
-## 10     1 advice   8.19e-  4
+##  1     1 aboven   0.0000262
+##  2     2 aboven   0.0000204
+##  3     3 aboven   0.0000236
+##  4     1 account  0.000249 
+##  5     2 account  0.000123 
+##  6     3 account  0.000105 
+##  7     1 actually 0.00129  
+##  8     2 actually 0.000954 
+##  9     3 actually 0.00173  
+## 10     1 advice   0.000605 
 ## # … with 42,062 more rows</code></pre>
 <pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
 top_terms &lt;- lda_td %&gt;%
@@ -291,18 +291,18 @@ top_terms %&gt;%
 lda_td &lt;- tidy(lda)
 lda_td</code></pre>
 <pre><code>## # A tibble: 56,096 x 3
-##    topic term         beta
-##    &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;
-##  1     1 aboven   2.75e- 5
-##  2     2 aboven   2.46e- 5
-##  3     3 aboven   4.61e-85
-##  4     4 aboven   3.47e- 5
-##  5     1 account  2.62e- 4
-##  6     2 account  6.88e-22
-##  7     3 account  3.95e- 4
-##  8     4 account  3.80e- 5
-##  9     1 actually 7.85e- 4
-## 10     2 actually 2.09e- 3
+##    topic term          beta
+##    &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1     1 aboven   3.56e-106
+##  2     2 aboven   6.41e-  5
+##  3     3 aboven   3.47e-  5
+##  4     4 aboven   2.33e- 14
+##  5     1 account  4.08e-  4
+##  6     2 account  3.94e-  5
+##  7     3 account  1.34e-  4
+##  8     4 account  2.15e-  6
+##  9     1 actually 7.81e-  4
+## 10     2 actually 1.87e-  3
 ## # … with 56,086 more rows</code></pre>
 <pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
 top_terms &lt;- lda_td %&gt;%
@@ -327,16 +327,16 @@ lda_td</code></pre>
 <pre><code>## # A tibble: 140,240 x 3
 ##    topic term        beta
 ##    &lt;int&gt; &lt;chr&gt;      &lt;dbl&gt;
-##  1     1 aboven 1.44e-209
-##  2     2 aboven 7.32e-  5
-##  3     3 aboven 2.15e-209
-##  4     4 aboven 6.10e- 13
-##  5     5 aboven 1.09e-200
-##  6     6 aboven 1.69e-209
-##  7     7 aboven 2.93e-201
-##  8     8 aboven 9.19e-  5
-##  9     9 aboven 2.50e-208
-## 10    10 aboven 8.04e-  5
+##  1     1 aboven 3.26e-189
+##  2     2 aboven 8.08e-  5
+##  3     3 aboven 1.50e-191
+##  4     4 aboven 3.16e-191
+##  5     5 aboven 6.92e-193
+##  6     6 aboven 8.12e-  5
+##  7     7 aboven 1.62e-191
+##  8     8 aboven 1.52e-193
+##  9     9 aboven 7.64e-  5
+## 10    10 aboven 2.56e-195
 ## # … with 140,230 more rows</code></pre>
 <pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
 top_terms &lt;- lda_td %&gt;%

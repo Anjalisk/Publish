@@ -8,9 +8,9 @@ categories:
 tags:
   - R Markdown
 description: ''
-featured: ''
-featuredalt: ''
-featuredpath: ''
+featured: pic05.jpeg
+featuredalt: Pic 5
+featuredpath: date
 linktitle: ''
 ---
 
