@@ -1,0 +1,31 @@
+---
+title: What Buisness Intelligence class taught me?
+author: Anjali Khushalani
+date: '2019-05-02'
+slug: what-buisness-intelligence-class-taught-me
+categories:
+  - R
+tags:
+  - R Markdown
+description: ''
+featured: ''
+featuredalt: ''
+featuredpath: ''
+linktitle: ''
+---
+
+*Data is the new oil. Unfortunately, the technology has evolved faster than the workforce skills to make sense of it, and organizations across sectors must adapt to this new reality or perish*
+
+**Andreas Weigend, Head of Stanford’s Social Data Lab and former Chief Scientist at Amazon**
+
+I Understand the trends in BI are changing. Business Intelligence has revolutionized and will continue to do so. Five BI trends which will rule BI landscape:
+
+- *Predictive and Prescriptive Analytics Tools*: Business Analytics of future is focused on the future and is desperately trying to answer what will happen tomorrow
+
+- *Artifical Intelligence*: This is the trend number #1 chosen by Gartner in their 2017 Strategic Technology trends report. I think Artficial intelligence is seen as the competitor but friend of human race by most of us. It is intersting to see how we have evolved from static charts to interactive and real-time dashboards
+
+- *Cloud Analytics*: I think in 2017 the Cloud analytics is regnant. Cloud analytics allows organizations to consolidate data from all sources, across the various communication channels. Cloud analytics ahs benefits such as robust data foundation, fast time to value and better collaboration, faster adoption, scalability and elasticity when compared to on-premise
+
+- *Security*: Security is without doubt one of the biggest business intelligence trends with number of data breaches news increasing associated with huge loss of data. Business organizations are going to be forced towards choosing appropriate security techniques
+
+- *Data Governance*: According to the DGI (Data Governance Institute), data governance is “the exercise of decision-making and authority for data-related matters.” In 2017, organizations are going to be forced to increase the quality of data as Gartner analyst Merv Adrian recently rightly tweeted “Well-managed data is mandatory before you move to advanced analytics”

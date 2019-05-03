@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>Topic Modeling - Anjali Khushalani</title>
+<meta name="description" content="Personal Blog">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+  <meta name="generator" content="Hugo 0.55.5" />
+  
+<meta itemprop="name" content="Topic Modeling">
+<meta itemprop="description" content="What is topic modeling? Topic modeling provides an algorithmic solution to managing, organizing and annotating large archival text. The annotations aid you in tasks of information retrieval, classification and corpus exploration
+ Setting up the platform to perform topic modeling You may want to consider installing these libraries using the install.packages(“packagename”) function and then calling the library
+library(wordcloud) library(data.table) library(tidytext) library(dplyr) library(ggplot2) library(SnowballC) library(RTextTools) library(tm) library(wordcloud) library(topicmodels) library(slam) library(reshape2) library(ldatuning)  Data The data for this blog has been collected from psychcentral.">
+
+
+<meta itemprop="datePublished" content="2019-05-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-02T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1596">
+
+
+
+<meta itemprop="keywords" content="R Markdown," />
+
+  <meta property="og:title" content="Topic Modeling" />
+<meta property="og:description" content="What is topic modeling? Topic modeling provides an algorithmic solution to managing, organizing and annotating large archival text. The annotations aid you in tasks of information retrieval, classification and corpus exploration
+ Setting up the platform to perform topic modeling You may want to consider installing these libraries using the install.packages(“packagename”) function and then calling the library
+library(wordcloud) library(data.table) library(tidytext) library(dplyr) library(ggplot2) library(SnowballC) library(RTextTools) library(tm) library(wordcloud) library(topicmodels) library(slam) library(reshape2) library(ldatuning)  Data The data for this blog has been collected from psychcentral." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/topic-modeling/" />
+<meta property="article:published_time" content="2019-05-02T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-02T00:00:00&#43;00:00"/>
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Topic Modeling"/>
+<meta name="twitter:description" content="What is topic modeling? Topic modeling provides an algorithmic solution to managing, organizing and annotating large archival text. The annotations aid you in tasks of information retrieval, classification and corpus exploration
+ Setting up the platform to perform topic modeling You may want to consider installing these libraries using the install.packages(“packagename”) function and then calling the library
+library(wordcloud) library(data.table) library(tidytext) library(dplyr) library(ggplot2) library(SnowballC) library(RTextTools) library(tm) library(wordcloud) library(topicmodels) library(slam) library(reshape2) library(ldatuning)  Data The data for this blog has been collected from psychcentral."/>
+
+  
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
+  
+    
+      <link rel="stylesheet" href="/css/normalize.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
+      <link rel="stylesheet" href="/css/main.min.css">
+      <link rel="stylesheet" href="/css/add-on.css">
+    
+  
+  
+</head>
+
+  <body>
+    
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/">
+        
+          
+            post
+          
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu">
+      
+        <a href="/" class="link"><i class="fas fa-home">&nbsp;</i>Home</a>
+      
+        <a href="/about/" class="link"><i class="far fa-id-card">&nbsp;</i>About</a>
+      
+        <a href="/blog/" class="link"><i class="far fa-newspaper">&nbsp;</i>Blog</a>
+      
+        <a href="/categories/" class="link"><i class="fas fa-sitemap">&nbsp;</i>Categories</a>
+      
+        <a href="/contact/" class="link"><i class="far fa-envelope">&nbsp;</i>Contact</a>
+      
+      <a href="#share-menu" class="share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+
+    </menu>
+    
+
+    <a href="#share-menu" class="share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    
+    <a href="#site-nav" class="nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  
+    <menu id="share-menu" class="flyout-menu">
+      <h1>Share Post</h1>
+      
+
+
+
+  
+    <a href="//twitter.com/share?url=&amp;text=&amp" target="_blank" rel="noopener" class="share-btn twitter">
+        <i class="fab fa-twitter"></i><p>&nbsp;Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=" target="_blank" rel="noopener" class="share-btn facebook">
+        <i class="fab fa-facebook"></i><p>&nbsp;Facebook</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=&amp;title=" target="_blank" rel="noopener" class="share-btn linkedin">
+            <i class="fab fa-linkedin"></i><p>&nbsp;LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=&amp;description=" target="_blank" rel="noopener" class="share-btn pinterest">
+          <i class="fab fa-pinterest-p"></i><p>&nbsp;Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=Check out this post by &amp;body=" target="_blank" class="share-btn email">
+          <i class="fas fa-envelope"></i><p>&nbsp;Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro">
+  <a href="/"><img src="/img/main/dp.jpg" class="circle" width="90px" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Anjali Khushalani</h1>
+  </header>
+  <main>
+    <p>Graduate Research Assistant at UNC Charlotte</p>
+  </main>
+  
+    <footer>
+      <ul class="social-icons">
+        
+
+        <li><a href="//github.com/Anjalisk" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//linkedin.com/in/anjali-khushalani" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+<li><a href="//facebook.com/anjali.khushalani" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="mailto:akhushal@uncc.edu" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        <article class="post">
+  <header>
+  <div class="title">
+    
+        <h2><a href="/post/topic-modeling/">Topic Modeling</a></h2>
+    
+    
+</div>
+  <div class="meta">
+    <time class="published" datetime="2019-05-02 00:00:00 &#43;0000 UTC">
+      May 2, 2019
+    </time>
+    <span class="author">Anjali Khushalani</span>
+    
+        <p>8 minute read</p>
+    
+  </div>
+</header>
+
+  <section id="social-share">
+    
+
+
+
+  
+    <a href="//twitter.com/share?url=&amp;text=&amp" target="_blank" rel="noopener" class="share-btn twitter">
+        <i class="fab fa-twitter"></i><p>&nbsp;Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=" target="_blank" rel="noopener" class="share-btn facebook">
+        <i class="fab fa-facebook"></i><p>&nbsp;Facebook</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=&amp;title=" target="_blank" rel="noopener" class="share-btn linkedin">
+            <i class="fab fa-linkedin"></i><p>&nbsp;LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=&amp;description=" target="_blank" rel="noopener" class="share-btn pinterest">
+          <i class="fab fa-pinterest-p"></i><p>&nbsp;Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=Check out this post by &amp;body=" target="_blank" class="share-btn email">
+          <i class="fas fa-envelope"></i><p>&nbsp;Email</p>
+        </a>
+  
+
+
+  </section>
+  
+
+  <div class="content">
+    
+
+
+<div id="what-is-topic-modeling" class="section level2">
+<h2>What is topic modeling?</h2>
+<p>Topic modeling provides an algorithmic solution to managing, organizing and annotating large archival text. The annotations aid you in tasks of information retrieval, classification and corpus exploration</p>
+</div>
+<div id="setting-up-the-platform-to-perform-topic-modeling" class="section level2">
+<h2>Setting up the platform to perform topic modeling</h2>
+<p>You may want to consider installing these libraries using the install.packages(“packagename”) function and then calling the library</p>
+<pre class="r"><code>library(wordcloud)
+library(data.table)
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+library(SnowballC)
+library(RTextTools)
+library(tm)
+library(wordcloud)
+library(topicmodels)
+library(slam)
+library(reshape2)
+library(ldatuning)</code></pre>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>The data for this blog has been collected from psychcentral.com. This website offers an online forum for posting questions and answers related to mental health. Please visit <a href="https://forums.psychcentral.com" class="uri">https://forums.psychcentral.com</a> for more information. Our objective is to perform text analytics to discover useful information related to mental health.</p>
+<pre class="r"><code>data &lt;- fread(&quot;/Users/Anjalikhushalani/Desktop/Publish/content/data/psychcentral_data.csv&quot;, sep=&quot;,&quot;, header=T, 
+              strip.white = T, na.strings = c(&quot;NA&quot;,&quot;NaN&quot;,&quot;&quot;,&quot;?&quot;)) </code></pre>
+</div>
+<div id="using-libraries-dplyr-and-tidytext-to-tokenize-column-q_content.-then-remove-the-stop-words.-the-count-the-number-of-tokens." class="section level1">
+<h1>Using libraries “dplyr” and “tidytext” to tokenize column q_content. Then remove the stop-words. The count the number of tokens.</h1>
+<pre class="r"><code>#Tokenzing
+
+#unnest_tokens above splits each row such that there is one token (word) in each row of the new data frame
+tidy_text &lt;- data %&gt;%
+  unnest_tokens(word, q_content)
+
+tidy_text[1:10]</code></pre>
+<pre><code>##     row              q_subject answers     word
+##  1:   0 Saying Goodbye For Now    &lt;NA&gt;     nits
+##  2:   0 Saying Goodbye For Now    &lt;NA&gt;     been
+##  3:   0 Saying Goodbye For Now    &lt;NA&gt;        a
+##  4:   0 Saying Goodbye For Now    &lt;NA&gt; pleasure
+##  5:   0 Saying Goodbye For Now    &lt;NA&gt;  hosting
+##  6:   0 Saying Goodbye For Now    &lt;NA&gt;     this
+##  7:   0 Saying Goodbye For Now    &lt;NA&gt;  service
+##  8:   0 Saying Goodbye For Now    &lt;NA&gt;     over
+##  9:   0 Saying Goodbye For Now    &lt;NA&gt;      the
+## 10:   0 Saying Goodbye For Now    &lt;NA&gt;     past</code></pre>
+<pre class="r"><code>#Remove StopWords
+data(stop_words)
+
+tidy_text &lt;- tidy_text %&gt;%
+  anti_join(stop_words)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>#Count
+tidy_text %&gt;%
+  count(word, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 46,081 x 2
+##    word        n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 im      13012
+##  2 dont    11197
+##  3 feel     9168
+##  4 time     6697
+##  5 life     4464
+##  6 ive      4403
+##  7 people   4233
+##  8 told     4150
+##  9 friends  4045
+## 10 love     3281
+## # … with 46,071 more rows</code></pre>
+<pre class="r"><code>#Visualization that shows the frequency of the tokens that appeared for at least 2000 times. 
+tidy_text %&gt;%
+  count(word, sort = TRUE) %&gt;%
+  filter(n &gt; 2000) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(NULL) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div id="now-using-snowball" class="section level2">
+<h2>Now using snowball</h2>
+</div>
+</div>
+<div id="what-is-snowball" class="section level1">
+<h1>What is Snowball?</h1>
+<p>An R interface to the C ‘libstemmer’ library that implements Porter’s word stemming algorithm for collapsing words to a common root to aid comparison of vocabulary. Currently supported languages are Danish, Dutch, English, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Romanian, Russian, Spanish, Swedish and Turkish.</p>
+<pre class="r"><code>#Stemming using SnowballC
+tidy_text &lt;- data %&gt;%
+  unnest_tokens(word, q_content) %&gt;%
+  mutate(word = wordStem(word))
+
+#Removing stopwords
+tidy_text &lt;- tidy_text %&gt;% anti_join(stop_words)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>#Count
+tidy_text %&gt;%
+  count(word, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 36,177 x 2
+##    word       n
+##    &lt;chr&gt;  &lt;int&gt;
+##  1 im     13013
+##  2 feel   12905
+##  3 dont   11197
+##  4 time    8755
+##  5 becaus  8106
+##  6 realli  6780
+##  7 friend  6417
+##  8 talk    5314
+##  9 veri    5234
+## 10 tri     5183
+## # … with 36,167 more rows</code></pre>
+<pre class="r"><code>#Plot a visualization that shows the frequency of the tokens that appeared for at least 4000 times.
+tidy_text %&gt;%
+  count(word, sort = TRUE) %&gt;%
+  filter(n &gt; 4000) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(NULL) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>#word cloud
+tidy_text %&gt;%
+  count(word) %&gt;%
+  with(wordcloud(word, n, max.words = 200))</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#colorcoded word cloud
+tidy_text %&gt;%
+  inner_join(get_sentiments(&quot;bing&quot;)) %&gt;%
+  count(word, sentiment, sort = TRUE) %&gt;%
+  acast(word ~ sentiment, value.var = &quot;n&quot;, fill = 0) %&gt;%
+  comparison.cloud(colors = c(&quot;#0000FF&quot;, &quot;#FF0000&quot;),
+                   max.words = 100)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<div id="topic-modeling-using-lda-on-q-content-column" class="section level2">
+<h2>Topic Modeling using LDA on “q-content” column</h2>
+<pre class="r"><code># We perform LDA on the rows 1 through 1000 in the data
+data &lt;- data[1:1000,]
+
+#Removing these words based on the above result
+wordstoremove &lt;- c(&quot;know&quot;,&quot;like&quot;,&quot;want&quot;,&quot;dont&quot;,
+                   &quot;just&quot;,&quot;feel&quot;,&quot;get&quot;,&quot;really&quot;,&quot;get&quot;,&quot;said&quot;,&quot;time&quot;,
+                   &quot;told&quot;,&quot;can&quot;,&quot;one&quot;,&quot;now&quot;,&quot;always&quot;,&quot;ive&quot;,&quot;even&quot;)
+
+data_sub &lt;- as.data.frame(sapply(data, function(x) gsub(paste(wordstoremove, collapse = &#39;|&#39;), &#39;&#39;, x)))
+
+corpus &lt;- Corpus(VectorSource(data_sub$q_content), readerControl=list(language=&quot;en&quot;))
+dtm &lt;- DocumentTermMatrix(corpus, control = list(stopwords = TRUE, minWordLength = 2, removeNumbers = TRUE, removePunctuation = TRUE,  stemDocument = TRUE))
+
+#Find the sum of words in each Document
+rowTotals &lt;- apply(dtm , 1, sum) 
+
+#remove all docs without words
+dtm.new   &lt;- dtm[rowTotals&gt; 0, ] 
+
+# k is the number of topics to be found.
+lda &lt;- LDA(dtm.new, k = 5) 
+
+lda_td &lt;- tidy(lda)</code></pre>
+<p><strong>Visualization to find the 10 terms that are most common withineach topic using k =5</strong></p>
+<pre class="r"><code>top_terms &lt;- lda_td %&gt;%
+  group_by(topic) %&gt;%
+  top_n(10, beta) %&gt;%
+  ungroup() %&gt;%
+  arrange(topic, -beta)
+
+top_terms %&gt;%
+  mutate(term = reorder(term, beta)) %&gt;%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = &quot;identity&quot;, show.legend = FALSE) +
+  facet_wrap(~ topic, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="determine-k-by-tuning" class="section level2">
+<h2>Determine k by tuning</h2>
+<pre class="r"><code>#lda &lt;- LDA(dtm.new, k = 5)
+
+tunes &lt;- FindTopicsNumber(
+  dtm.new,
+  topics = c(2:20),
+  metrics = c(&quot;Griffiths2004&quot;, &quot;CaoJuan2009&quot;, &quot;Arun2010&quot;, &quot;Deveaud2014&quot;),
+  method = &quot;Gibbs&quot;,
+  control = list(seed = 77),
+  mc.cores = 3L,
+  verbose = TRUE
+)</code></pre>
+<pre><code>## fit models... done.
+## calculate metrics:
+##   Griffiths2004... done.
+##   CaoJuan2009... done.
+##   Arun2010... done.
+##   Deveaud2014... done.</code></pre>
+<pre class="r"><code>FindTopicsNumber_plot(tunes)</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="experimenting-with-different-values-of-k" class="section level2">
+<h2>Experimenting with different values of “k”</h2>
+<p><strong>k=2</strong></p>
+<pre class="r"><code>lda &lt;- LDA(dtm.new, k = 2) 
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td &lt;- tidy(lda)
+lda_td</code></pre>
+<pre><code>## # A tibble: 28,048 x 3
+##    topic term           beta
+##    &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;
+##  1     1 aboven   0.00000583
+##  2     2 aboven   0.0000419 
+##  3     1 account  0.000274  
+##  4     2 account  0.0000258 
+##  5     1 actually 0.000993  
+##  6     2 actually 0.00164   
+##  7     1 advice   0.000747  
+##  8     2 advice   0.000880  
+##  9     1 already  0.000848  
+## 10     2 already  0.000481  
+## # … with 28,038 more rows</code></pre>
+<pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
+top_terms &lt;- lda_td %&gt;%
+  group_by(topic) %&gt;%
+  top_n(10, beta) %&gt;%
+  ungroup() %&gt;%
+  arrange(topic, -beta)
+
+top_terms %&gt;%
+  mutate(term = reorder(term, beta)) %&gt;%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = &quot;identity&quot;, show.legend = FALSE) +
+  facet_wrap(~ topic, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><strong>k= 3</strong></p>
+<pre class="r"><code>lda &lt;- LDA(dtm.new, k = 3) 
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td &lt;- tidy(lda)
+lda_td</code></pre>
+<pre><code>## # A tibble: 42,072 x 3
+##    topic term          beta
+##    &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1     1 aboven   4.58e-  5
+##  2     2 aboven   2.33e-  5
+##  3     3 aboven   9.86e-113
+##  4     1 account  2.43e-  5
+##  5     2 account  9.51e-  5
+##  6     3 account  3.46e-  4
+##  7     1 actually 1.81e-  3
+##  8     2 actually 1.06e-  3
+##  9     3 actually 1.03e-  3
+## 10     1 advice   8.19e-  4
+## # … with 42,062 more rows</code></pre>
+<pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
+top_terms &lt;- lda_td %&gt;%
+  group_by(topic) %&gt;%
+  top_n(10, beta) %&gt;%
+  ungroup() %&gt;%
+  arrange(topic, -beta)
+
+top_terms %&gt;%
+  mutate(term = reorder(term, beta)) %&gt;%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = &quot;identity&quot;, show.legend = FALSE) +
+  facet_wrap(~ topic, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><strong>k=4</strong></p>
+<pre class="r"><code>lda &lt;- LDA(dtm.new, k = 4)
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td &lt;- tidy(lda)
+lda_td</code></pre>
+<pre><code>## # A tibble: 56,096 x 3
+##    topic term         beta
+##    &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;
+##  1     1 aboven   2.75e- 5
+##  2     2 aboven   2.46e- 5
+##  3     3 aboven   4.61e-85
+##  4     4 aboven   3.47e- 5
+##  5     1 account  2.62e- 4
+##  6     2 account  6.88e-22
+##  7     3 account  3.95e- 4
+##  8     4 account  3.80e- 5
+##  9     1 actually 7.85e- 4
+## 10     2 actually 2.09e- 3
+## # … with 56,086 more rows</code></pre>
+<pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
+top_terms &lt;- lda_td %&gt;%
+  group_by(topic) %&gt;%
+  top_n(10, beta) %&gt;%
+  ungroup() %&gt;%
+  arrange(topic, -beta)
+
+top_terms %&gt;%
+  mutate(term = reorder(term, beta)) %&gt;%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = &quot;identity&quot;, show.legend = FALSE) +
+  facet_wrap(~ topic, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><strong>k =10</strong></p>
+<pre class="r"><code>lda &lt;- LDA(dtm.new, k = 10) # k is the number of topics to be found.
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td &lt;- tidy(lda)
+lda_td</code></pre>
+<pre><code>## # A tibble: 140,240 x 3
+##    topic term        beta
+##    &lt;int&gt; &lt;chr&gt;      &lt;dbl&gt;
+##  1     1 aboven 1.44e-209
+##  2     2 aboven 7.32e-  5
+##  3     3 aboven 2.15e-209
+##  4     4 aboven 6.10e- 13
+##  5     5 aboven 1.09e-200
+##  6     6 aboven 1.69e-209
+##  7     7 aboven 2.93e-201
+##  8     8 aboven 9.19e-  5
+##  9     9 aboven 2.50e-208
+## 10    10 aboven 8.04e-  5
+## # … with 140,230 more rows</code></pre>
+<pre class="r"><code>#Visualization to find the 10 terms that are most common within each topic
+top_terms &lt;- lda_td %&gt;%
+  group_by(topic) %&gt;%
+  top_n(10, beta) %&gt;%
+  ungroup() %&gt;%
+  arrange(topic, -beta)
+
+top_terms %&gt;%
+  mutate(term = reorder(term, beta)) %&gt;%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = &quot;identity&quot;, show.legend = FALSE) +
+  facet_wrap(~ topic, scales = &quot;free&quot;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-05-02-topic-modeling.en_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>On the similar grounds topic modeling can performed on the “answers” column in the dataset.</p>
+<p><strong>Conclusion</strong></p>
+<p>Based on the above analysis : from word cloud there is typical pattern around questions, so questions have negative expressions around – depression, addiction, suffer, death, smoke, kill, lack of trust, fear, fail while the positive expression are love, respect, luck, support, fun, honest, patience, so this makes me come to a hypothesis that people suffer from mental disorders due to lack of support, love, trust and fear of failure.</p>
+<p>The top topics based on topic modeling are people expressing concerns with regards to people seeking help from therapists and such platforms for the trouble around relationship, support, addiction, depression and determining the steps to maintain work life balance and being happy.</p>
+</div>
+</div>
+
+  </div>
+  <footer>
+    <ul class="stats">
+  
+    
+    
+      <li class="categories">
+        <ul>
+          
+            
+            <li><a class="article-category-link" href="/categories/r">R</a></li>
+          
+        </ul>
+      </li>
+    
+  
+  
+    
+    
+      <li class="tags">
+        <ul>
+          
+            
+            <li><a class="article-category-link" href="/tags/r-markdown">R Markdown</a></li>
+          
+        </ul>
+      </li>
+    
+  
+</ul>
+
+  </footer>
+</article>
+<article class="post">
+  
+
+</article>
+<div class="pagination">
+  
+    <a href="/post/what-buisness-intelligence-class-taught-me/" class="button big previous"><i class="fas fa-angle-left"></i> What Buisness Intelligence class taught me?</a>
+  
+  
+</div>
+
+
+      </main>
+      <section id="site-sidebar">
+  <section id="recent-posts">
+    <header>
+      <h1>Recent posts</h1>
+    </header>
+    
+    <article class="mini-post">
+      <section>
+        
+
+      </section>
+      <header>
+        <h1><a href="/post/">Post</a></h1>
+        <time class="published" datetime="">January 2, 2006</time>
+      </header>
+    </article>
+    
+    <article class="mini-post">
+      <section>
+        
+
+      </section>
+      <header>
+        <h1><a href="/post/topic-modeling/">Topic Modeling</a></h1>
+        <time class="published" datetime="">January 2, 2006</time>
+      </header>
+    </article>
+    
+    
+      <a href="/blog/" class="button">See more</a>
+    
+  </section>
+
+  
+    
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">Categories</a></h1>
+        </header>
+        <ul>
+          
+            
+          
+          
+          <li>
+            
+              <a href="/categories/hugo/">hugo<span class="count">6</span></a>
+            
+          
+          <li>
+            
+              <a href="/categories/r/">r<span class="count">3</span></a>
+            
+          
+          <li>
+            
+              <a href="/categories/go/">go<span class="count">2</span></a>
+            
+          
+          <li>
+            
+              <a href="/categories/jekyll/">jekyll<span class="count">2</span></a>
+            
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  <section id="mini-bio">
+    <header>
+      <h1>About</h1>
+    </header>
+    <p></p>
+    <footer>
+      <a href="/about" class="button">Learn More</a>
+    </footer>
+  </section>
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="social-icons">
+        
+
+        <li><a href="//github.com/Anjalisk" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//linkedin.com/in/anjali-khushalani" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+<li><a href="//facebook.com/anjali.khushalani" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="mailto:akhushal@uncc.edu" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    
+      &copy; 2019
+      
+        Anjali Khushalani
+      
+    .
+    Powered by <a href="//gohugo.io" target="_blank" rel="noopener">Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+  
+  <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  <script src=/js/util.js></script>
+  <script src=/js/main.js></script>
+  <script src=/js/add-on.js></script>
+  
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+    </div>
+  </body>
+</html>

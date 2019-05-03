@@ -1,0 +1,309 @@
+---
+title: Topic Modeling
+author: Anjali Khushalani
+date: '2019-05-02'
+slug: topic-modeling
+categories:
+  - R
+tags:
+  - R Markdown
+description: ''
+featured: ''
+featuredalt: ''
+featuredpath: ''
+linktitle: ''
+---
+
+## What is topic modeling?
+
+Topic modeling provides an algorithmic solution to managing, organizing and annotating large archival text. The annotations aid you in tasks of information retrieval, classification and corpus exploration
+
+
+
+## Setting up the platform to perform topic modeling
+
+You may want to consider installing these libraries using the install.packages("packagename") function and then calling the library
+
+```{r message=FALSE}
+
+library(wordcloud)
+library(data.table)
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+library(SnowballC)
+library(RTextTools)
+library(tm)
+library(wordcloud)
+library(topicmodels)
+library(slam)
+library(reshape2)
+library(ldatuning)
+
+```
+
+
+## Data
+
+The data for this blog has been collected from psychcentral.com. This website offers an online forum for posting questions and answers related to mental health. Please visit https://forums.psychcentral.com for more information. Our objective is to perform text analytics to discover useful information related to mental health.
+
+``` {r}
+
+data <- fread("/Users/Anjalikhushalani/Desktop/Publish/content/data/psychcentral_data.csv", sep=",", header=T, 
+              strip.white = T, na.strings = c("NA","NaN","","?")) 
+
+```
+
+# Using libraries “dplyr” and “tidytext” to tokenize column q_content. Then remove the stop-words. The count the number of tokens. 
+
+``` {r}
+#Tokenzing
+
+#unnest_tokens above splits each row such that there is one token (word) in each row of the new data frame
+tidy_text <- data %>%
+  unnest_tokens(word, q_content)
+
+tidy_text[1:10]
+
+#Remove StopWords
+data(stop_words)
+
+tidy_text <- tidy_text %>%
+  anti_join(stop_words)
+
+#Count
+tidy_text %>%
+  count(word, sort = TRUE)
+
+#Visualization that shows the frequency of the tokens that appeared for at least 2000 times. 
+tidy_text %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 2000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = "identity") +
+  xlab(NULL) +
+  coord_flip()
+```
+
+## Now using snowball
+
+# What is Snowball?
+
+An R interface to the C 'libstemmer' library that implements Porter's word stemming algorithm for collapsing words to a common root to aid comparison of vocabulary. Currently supported languages are Danish, Dutch, English, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Romanian, Russian, Spanish, Swedish and Turkish.
+
+``` {r}
+#Stemming using SnowballC
+tidy_text <- data %>%
+  unnest_tokens(word, q_content) %>%
+  mutate(word = wordStem(word))
+
+#Removing stopwords
+tidy_text <- tidy_text %>% anti_join(stop_words)
+
+#Count
+tidy_text %>%
+  count(word, sort = TRUE)
+
+#Plot a visualization that shows the frequency of the tokens that appeared for at least 4000 times.
+tidy_text %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 4000) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = "identity") +
+  xlab(NULL) +
+  coord_flip()
+```
+
+
+``` {r}
+
+#word cloud
+tidy_text %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 200))
+
+#colorcoded word cloud
+tidy_text %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("#0000FF", "#FF0000"),
+                   max.words = 100)
+```
+
+## Topic Modeling using LDA on "q-content" column
+
+``` {r}
+
+# We perform LDA on the rows 1 through 1000 in the data
+data <- data[1:1000,]
+
+#Removing these words based on the above result
+wordstoremove <- c("know","like","want","dont",
+                   "just","feel","get","really","get","said","time",
+                   "told","can","one","now","always","ive","even")
+
+data_sub <- as.data.frame(sapply(data, function(x) gsub(paste(wordstoremove, collapse = '|'), '', x)))
+
+corpus <- Corpus(VectorSource(data_sub$q_content), readerControl=list(language="en"))
+dtm <- DocumentTermMatrix(corpus, control = list(stopwords = TRUE, minWordLength = 2, removeNumbers = TRUE, removePunctuation = TRUE,  stemDocument = TRUE))
+
+#Find the sum of words in each Document
+rowTotals <- apply(dtm , 1, sum) 
+
+#remove all docs without words
+dtm.new   <- dtm[rowTotals> 0, ] 
+
+# k is the number of topics to be found.
+lda <- LDA(dtm.new, k = 5) 
+
+lda_td <- tidy(lda)
+
+```
+
+**Visualization to find the 10 terms that are most common withineach topic using k =5**
+
+``` {r}
+top_terms <- lda_td %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+
+## Determine k by tuning
+
+``` {r}
+#lda <- LDA(dtm.new, k = 5)
+
+tunes <- FindTopicsNumber(
+  dtm.new,
+  topics = c(2:20),
+  metrics = c("Griffiths2004", "CaoJuan2009", "Arun2010", "Deveaud2014"),
+  method = "Gibbs",
+  control = list(seed = 77),
+  mc.cores = 3L,
+  verbose = TRUE
+)
+
+FindTopicsNumber_plot(tunes)
+```
+
+## Experimenting with different values of "k"
+
+**k=2**
+
+``` {r}
+lda <- LDA(dtm.new, k = 2) 
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td <- tidy(lda)
+lda_td
+
+#Visualization to find the 10 terms that are most common within each topic
+top_terms <- lda_td %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+
+**k= 3**
+
+```{r}
+lda <- LDA(dtm.new, k = 3) 
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td <- tidy(lda)
+lda_td
+
+#Visualization to find the 10 terms that are most common within each topic
+top_terms <- lda_td %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+
+
+```
+
+**k=4**
+
+```{r}
+lda <- LDA(dtm.new, k = 4)
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td <- tidy(lda)
+lda_td
+
+#Visualization to find the 10 terms that are most common within each topic
+top_terms <- lda_td %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+
+**k =10**
+
+``` {r}
+lda <- LDA(dtm.new, k = 10) # k is the number of topics to be found.
+
+#Using the tidytext package for extracting the per-topic-per-word probabilities
+lda_td <- tidy(lda)
+lda_td
+
+#Visualization to find the 10 terms that are most common within each topic
+top_terms <- lda_td %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+```
+
+On the similar grounds topic modeling can performed on the "answers" column in the dataset.
+
+**Conclusion**
+
+Based on the above analysis : from word cloud there is typical pattern around questions, so questions have negative expressions around – depression, addiction, suffer, death, smoke, kill, lack of trust, fear, fail while the positive expression are love, respect, luck, support, fun, honest, patience, so this makes me come to a hypothesis that people suffer from mental disorders due to lack of support, love, trust and fear of failure. 
+
+The top topics based on topic modeling are people expressing concerns with regards to people seeking help from therapists and such platforms for the trouble around relationship, support, addiction, depression and determining the steps to maintain work life balance and being happy.
+
+

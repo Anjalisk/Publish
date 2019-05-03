@@ -8,11 +8,6 @@
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
-                hreflang="fr"
-                href="/fr/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="pl"
                 href="/pl/"
                 />
@@ -27,11 +22,6 @@
     <loc>/categories/</loc>
     <lastmod>2019-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/categories/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
@@ -68,11 +58,6 @@
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
-                hreflang="fr"
-                href="/fr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="pl"
                 href="/pl/tags/"
                 />
@@ -84,6 +69,11 @@
   </url>
   
   <url>
+    <loc>/post/topic-modeling/</loc>
+    <lastmod>2019-05-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/what-buisness-intelligence-class-taught-me/</loc>
     <lastmod>2019-05-02T00:00:00+00:00</lastmod>
   </url>
@@ -92,11 +82,6 @@
     <loc>/blog/</loc>
     <lastmod>2015-07-23T21:13:14-05:00</lastmod>
     <priority>0</priority>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/blog/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
@@ -131,11 +116,6 @@
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="fr"
-                href="/fr/blog/creating-a-new-theme/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="pl"
                 href="/pl/blog/creating-a-new-theme/"
                 />
@@ -147,14 +127,14 @@
   </url>
   
   <url>
+    <loc>/blog/creating-a-new-theme.fr/</loc>
+    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/hugo/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/categories/hugo/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
@@ -177,24 +157,24 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="fr"
-                href="/fr/about/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="en"
                 href="/about/"
                 />
   </url>
   
   <url>
+    <loc>/about/_index.fr/</loc>
+    <lastmod>2014-04-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/goisforlovers.fr/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/goisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/blog/goisforlovers/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
@@ -208,13 +188,13 @@
   </url>
   
   <url>
+    <loc>/blog/hugoisforlovers.fr/</loc>
+    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/hugoisforlovers/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/blog/hugoisforlovers/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
@@ -233,11 +213,6 @@
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
-                hreflang="fr"
-                href="/fr/categories/go/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="pl"
                 href="/pl/categories/go/"
                 />
@@ -254,11 +229,6 @@
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
-                hreflang="fr"
-                href="/fr/categories/jekyll/"
-                />
-    <xhtml:link
-                rel="alternate"
                 hreflang="pl"
                 href="/pl/categories/jekyll/"
                 />
@@ -270,13 +240,13 @@
   </url>
   
   <url>
+    <loc>/blog/migrate-from-jekyll.fr/</loc>
+    <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/migrate-from-jekyll/</loc>
     <lastmod>2014-03-10T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/blog/migrate-from-jekyll/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
@@ -290,12 +260,11 @@
   </url>
   
   <url>
+    <loc>/contact/_index.fr/</loc>
+  </url>
+  
+  <url>
     <loc>/contact/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="/fr/contact/"
-                />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"

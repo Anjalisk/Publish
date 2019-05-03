@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Topic Modeling</title>
+      <link>/post/topic-modeling/</link>
+      <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/topic-modeling/</guid>
+      <description>What is topic modeling? Topic modeling provides an algorithmic solution to managing, organizing and annotating large archival text. The annotations aid you in tasks of information retrieval, classification and corpus exploration
+ Setting up the platform to perform topic modeling You may want to consider installing these libraries using the install.packages(“packagename”) function and then calling the library
+library(wordcloud) library(data.table) library(tidytext) library(dplyr) library(ggplot2) library(SnowballC) library(RTextTools) library(tm) library(wordcloud) library(topicmodels) library(slam) library(reshape2) library(ldatuning)  Data The data for this blog has been collected from psychcentral.</description>
+    </item>
+    
+    <item>
       <title>What Buisness Intelligence class taught me?</title>
       <link>/post/what-buisness-intelligence-class-taught-me/</link>
       <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>

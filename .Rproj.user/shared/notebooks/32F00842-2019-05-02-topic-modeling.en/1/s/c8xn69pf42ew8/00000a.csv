@@ -1,0 +1,4 @@
+"0",""
+"0","data <- fread(""/Users/Anjalikhushalani/Desktop/Publish/content/psychcentral_data.csv"", sep="","", header=T, "
+"0","              strip.white = T, na.strings = c(""NA"",""NaN"","""",""?"")) "
+"0",""
